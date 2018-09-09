@@ -5,13 +5,14 @@ const users = {
         return new Promise((resolve, reject) => {
             const schema = Joi.object().keys({
                 email:Joi.string().required(),
-                password:Joi.string().required()
-            });
+                password:Joi.string().required(),
+                });
             const validateRequest = Joi.validate({
                 email: data.email,
-                password:data.password
-            }, schema);
+                password:data.password,
+                }, schema);
             if (validateRequest.error) {
+                console.log("validateRequest.error",validateRequest.error)
                 return reject({status: "error", code:"FVF" , msg: "field validation failed"});
             }
             return resolve("success")

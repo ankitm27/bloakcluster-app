@@ -9,92 +9,146 @@ export const userActions = {
     logout,
     register,
     getAll,
-    delete: _delete
+    delete: _delete,
+    getAllList,
+    addRepo
 };
 
 function login(username, password) {
     return dispatch => {
-        dispatch(request({ username }));
+        dispatch(request({username}));
 
         userService.login(username, password)
             .then(
                 user => {
-                    //console.log("user",user);
-                    if(user.success){
-                        //console.log("success");
-                        dispatch(success());
-                        history.push('/')
-                    }
-                    //console.log("error");
-                    //dispatch(success(user));
-                    //history.push('/');
-                    dispatch(alertActions.error(user.msg.toString()));
-                    //browserHistory.push('/')
-                },
-                error => {
-                    //console.log("error",error);
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                if (user.success) {
+                    dispatch(success());
+                    localStorage.setItem('user', JSON.stringify(user.data.token));
+                    history.push('/')
+                } else {
+                    dispatch(alertActions.error(user.message.toString()));
                 }
-            );
+            },
+                error => {
+                dispatch(failure(error.toString()));
+                dispatch(alertActions.error(error.toString()));
+            }
+        );
     };
 
-    function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
-    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
-    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+    function request(user) {
+        return {type: userConstants.LOGIN_REQUEST, user}
+    }
+
+    function success(user) {
+        return {type: userConstants.LOGIN_SUCCESS, user}
+    }
+
+    function failure(error) {
+        return {type: userConstants.LOGIN_FAILURE, error}
+    }
 }
 
 function logout() {
     userService.logout();
-    return { type: userConstants.LOGOUT };
+    return {type: userConstants.LOGOUT};
 }
 
 function register(user) {
     return dispatch => {
         dispatch(request(user));
 
-        userService.register(user)
+        userService.register(user.username, user.password)
             .then(
-                user => { 
+                user => {
+                if (user.success) {
                     dispatch(success());
                     history.push('/login');
-                    //dispatch(alertActions.success('Registration successful'));
-                },
-                error => {
-                    dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
+                } else {
+                    dispatch(alertActions.error(user.message.toString()));
                 }
-            );
+            },
+                error => {
+                dispatch(failure(error.toString()));
+                dispatch(alertActions.error(error.toString()));
+            }
+        );
     };
 
-    function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
-    function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
-    function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
+    function request(user) {
+        return {type: userConstants.REGISTER_REQUEST, user}
+    }
+
+    function success(user) {
+        return {type: userConstants.REGISTER_SUCCESS, user}
+    }
+
+    function failure(error) {
+        return {type: userConstants.REGISTER_FAILURE, error}
+    }
 }
 
 function getAll() {
+    const token = getToken();
     return dispatch => {
         dispatch(request());
 
-        userService.getAll()
+        userService.getAll(token)
             .then(
                 users => {
-                    console.log("users list 1111",users.data[0].favouriteList);
-                    dispatch(success(users.data[0].favouriteList))
-                },
+                //console.log("user list",users);
+                //    console.log("users list 1111", users.data);
+                dispatch(success(users.data))
+            },
                 error => {
-                    //console.log("error",error);
-                    dispatch(failure(error.toString()))
-                }
-            );
+                //console.log("error",error);
+                dispatch(failure(error.toString()))
+            }
+        );
     };
 
-    function request() { return { type: userConstants.GETALL_REQUEST } }
-    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
-    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+    function request() {
+        return {type: userConstants.GETALL_REQUEST}
+    }
+
+    function success(users) {
+        return {type: userConstants.GETALL_SUCCESS, users}
+    }
+
+    function failure(error) {
+        return {type: userConstants.GETALL_FAILURE, error}
+    }
 }
 
-// prefixed function name with underscore because delete is a reserved word in javascript
+function getAllList() {
+    return dispatch => {
+        dispatch(request());
+        userService.getAllList()
+            .then(
+                favourite => {
+                dispatch(success(favourite.data))
+                //return favourite.data;
+            },
+                error => {
+                //console.log("error",error);
+                dispatch(failure(error.toString()))
+            }
+        );
+    };
+
+    function request() {
+        return {type: userConstants.GETALLLIST_REQUEST}
+    }
+
+    function success(list) {
+        return {type: userConstants.GETALLLIST_SUCCESS, list}
+    }
+
+    function failure(error) {
+        return {type: userConstants.GETALLLIST_FAILURE, error}
+    }
+}
+
 function _delete(id) {
     return dispatch => {
         dispatch(request(id));
@@ -103,10 +157,55 @@ function _delete(id) {
             .then(
                 user => dispatch(success(id)),
                 error => dispatch(failure(id, error.toString()))
-            );
+        );
     };
 
-    function request(id) { return { type: userConstants.DELETE_REQUEST, id } }
-    function success(id) { return { type: userConstants.DELETE_SUCCESS, id } }
-    function failure(id, error) { return { type: userConstants.DELETE_FAILURE, id, error } }
+    function request(id) {
+        return {type: userConstants.DELETE_REQUEST, id}
+    }
+
+    function success(id) {
+        return {type: userConstants.DELETE_SUCCESS, id}
+    }
+
+    function failure(id, error) {
+        return {type: userConstants.DELETE_FAILURE, id, error}
+    }
+}
+
+function addRepo(repoName) {
+    const token = getToken();
+    return dispatch => {
+        dispatch(request({repoName}));
+
+        userService.addRepo(token, repoName)
+            .then(
+                result => {
+                dispatch(success(result));
+                history.push('/');
+            },
+                error => {
+                dispatch(failure(error.toString()));
+                dispatch(alertActions.error(error.toString()));
+            }
+        );
+    };
+
+    function request(user) {
+        return {type: userConstants.ADDITEM_REQUEST, user}
+    }
+
+    function success(user) {
+        return {type: userConstants.ADDITEM_SUCCESS, user}
+    }
+
+    function failure(error) {
+        return {type: userConstants.ADDITEM_FAILURE, error}
+    }
+}
+
+const getToken = () => {
+    let token = localStorage.getItem("user");
+    token = token.substring(1, token.length - 1);
+    return token;
 }

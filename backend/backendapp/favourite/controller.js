@@ -2,6 +2,7 @@ const helpers = require('./helper.js');
 const responseFunction = require('./../utils/responseFunction.js');
 const logger = require('./../utils/logging.js');
 const fieldValidation = require('./fieldValidation.js');
+const appHelper = require('./../helpers.js');
 
 const favourite = {
     getFavouriteList:(req,res) => {
@@ -19,7 +20,6 @@ const favourite = {
         .then((fieldValidationResult) => {
                 return helpers.addIntoFavouriteList(req.body.userId, req.body.repoName)
             }).then((getFavouriteList) => {
-                console.log("getFavouriteList",getFavouriteList);
                 logger.trace("Successfully added favourite",getFavouriteList);
                 return responseFunction.sendSuccess("Successfully added favourite",res,{});
             }).catch((err) => {
@@ -31,9 +31,11 @@ const favourite = {
         fieldValidation.getUsersFavourite(req.query)
         .then((fieldValidation) => {
                 return helpers.getUserFavouriteList(req.query.userId)
-            }).then((getFavouriteList) => {
-                logger.trace("Successfully get data",getFavouriteList);
-                return responseFunction.sendSuccess("Successfully get list",res,getFavouriteList);
+            }).then((getUserFavouriteList) => {
+                return helpers.getDescription(getUserFavouriteList)
+            }).then((getDescription) => {
+                logger.trace("Successfully get list",getDescription);
+                return responseFunction.sendSuccess("Successfully get list",res,getDescription);
             }).catch((err) => {
                 logger.trace("Error in fetching the list",err);
                 return responseFunction.sendError(err,res);

@@ -8,6 +8,7 @@ import { PrivateRoute } from '../_components';
 import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { RegisterPage } from '../RegisterPage';
+import { FavouritePage } from '../FavouritePage';
 
 class App extends React.Component {
     constructor(props) {
@@ -19,12 +20,11 @@ class App extends React.Component {
             dispatch(alertActions.clear());
         });
     }
-
     render() {
         const { alert } = this.props;
         return (
-            <div className="jumbotron">
-                <div className="container">
+            <div>
+                <div>
                     <div className="col-sm-8 col-sm-offset-2">
                         {alert.message &&
                             <div className={`alert ${alert.type}`}>{alert.message}</div>
@@ -34,6 +34,7 @@ class App extends React.Component {
                                 <PrivateRoute exact path="/" component={HomePage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/register" component={RegisterPage} />
+                                <Route path="/addFavourite" component={FavouritePage} />
                             </div>
                         </Router>
                     </div>

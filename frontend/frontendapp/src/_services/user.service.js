@@ -8,45 +8,64 @@ export const userService = {
     getAll,
     getById,
     update,
-    delete: _delete
+    delete: _delete,
+    getAllList,
+    addRepo
 };
 
 function login(email, password) {
-    console.log("check");
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({ email, password })
     };
-    console.log("email",email);
-    console.log("password",password);
+    //console.log("email",email);
+    //console.log("password",password);
     return fetch(`${config.apiUrl}/users/login`, requestOptions)
         .then(handleResponse)
         .then(user => {
-            console.log("user",user);
+            console.log("user 11111",user);
             // login successful if there's a jwt token in the response
             //if (user.success) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
+            //    // store user details and jwt token in local storage to keep user logged in between page refreshes
+            //    localStorage.setItem('user', JSON.stringify(user));
             //}
 
             return user;
         });
 }
 
+function addRepo(token, repoName) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,token:token},
+        body: JSON.stringify({ repoName })
+    };
+    return fetch(`${config.apiUrl}/favourite/add`, requestOptions).then(handleResponse)
+
+}
+
 function logout() {
-    // remove user from local storage to log user out
     localStorage.removeItem('user');
 }
 
-function getAll() {
+function getAll(token) {
     console.log("yes");
     const requestOptions = {
         method: 'GET',
-        //headers: authHeader()
+        headers:{'token':token}
+    };
+    return fetch(`${config.apiUrl}/favourite/users/list`, requestOptions).then(handleResponse);
+}
+
+
+function getAllList() {
+    console.log("yes");
+    const requestOptions = {
+        method: 'GET',
     };
 
-    return fetch(`${config.apiUrl}/favourite/users/list?userId=abc`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/favourite/list`, requestOptions).then(handleResponse);
 }
 
 function getById(id) {
@@ -58,14 +77,14 @@ function getById(id) {
     return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
 }
 
-function register(user) {
+function register(email,password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: JSON.stringify({email,password})
     };
 
-    return fetch(`${config.apiUrl}/users/register`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/users/signup`, requestOptions).then(handleResponse);
 }
 
 function update(user) {
