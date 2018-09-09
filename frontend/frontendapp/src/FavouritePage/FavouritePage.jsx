@@ -51,13 +51,13 @@ class FavouritePage extends React.Component {
         }
         return (
             <div style={divStyle}>
-                <nav class="navbar navbar-default" style={navbarColor}>
-                    <div class="container-fluid">
-                       <div class="navbar-header">
-                         <a class="navbar-brand" href="#">BlockCluster</a>
+                <nav className="navbar navbar-default" style={navbarColor}>
+                    <div className="container-fluid">
+                       <div className="navbar-header">
+                         <a className="navbar-brand" href="#">BlockCluster</a>
                        </div>
-                       <ul class="nav navbar-nav">
-                           <li class="active"><a href="/">Home</a></li>
+                       <ul className="nav navbar-nav">
+                           <li className="active"><a href="/">Home</a></li>
                        </ul>
                     </div>
                 </nav>
@@ -66,7 +66,7 @@ class FavouritePage extends React.Component {
                 <div key={index } style={container}>
                         <h3 style={heading}>{name.repoName}</h3>
                         <p style={description}>{name.description}</p>
-                        <button type="button" class="btn btn-success btn-lg" style={buttonStyle} onClick={this.handleSubmit.bind(this,{name})}>Add</button>
+                        <button type="button" className="btn btn-success btn-lg" style={buttonStyle} onClick={this.handleSubmit.bind(this,{name})}>Add</button>
                 </div>
             )
             })}

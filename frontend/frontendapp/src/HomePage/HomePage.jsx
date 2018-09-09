@@ -43,13 +43,13 @@ class HomePage extends React.Component {
         }
         return (
             <div style={divStyle}>
-            <nav class="navbar navbar-default" style={navbarColor}>
-                  <div class="container-fluid">
-                     <div class="navbar-header">
-                       <a class="navbar-brand" href="#">BlockCluster</a>
+            <nav className="navbar navbar-default" style={navbarColor}>
+                  <div className="container-fluid">
+                     <div className="navbar-header">
+                       <a className="navbar-brand" href="#">BlockCluster</a>
                      </div>
-                  <ul class="nav navbar-nav">
-                     <li class="active"><a href="/addFavourite">Add</a></li>
+                  <ul className="nav navbar-nav">
+                     <li className="active"><a href="/addFavourite">Add</a></li>
                   </ul>
                   </div>
             </nav>
