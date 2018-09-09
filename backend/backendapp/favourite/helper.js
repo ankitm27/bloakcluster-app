@@ -4,8 +4,6 @@ const favourite = {
         return new Promise((resolve, reject) => {
             const favouriteList = db.get('favouriteList');
             favouriteList.find({}, {_id: 0}, (err, result) => {
-                // console.log("err", err);
-                // console.log("result", result);
                 if (err) {
                     return reject({code: "SE", msg: "Please try after some time"});
                 }
@@ -17,8 +15,6 @@ const favourite = {
         })
     },
     addIntoFavouriteList: (userId, repoName) => {
-        // console.log("user id",userId);
-        // console.log("repo name",repoName);
         return new Promise((resolve, reject) => {
             const favouriteList = db.get('userFavouriteList');
             favouriteList.findOneAndUpdate({

@@ -12,7 +12,6 @@ const users = {
                 password:data.password,
                 }, schema);
             if (validateRequest.error) {
-                console.log("validateRequest.error",validateRequest.error)
                 return reject({status: "error", code:"FVF" , msg: "field validation failed"});
             }
             return resolve("success")

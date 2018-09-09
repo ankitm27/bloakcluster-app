@@ -10,7 +10,6 @@ const config = require('./../config/index.js');
 
 const users = {
     signUp: (req, res) => {
-        console.log("req,body",req.body);
         fieldValidation.signUp(req.body)
             .then((fieldValidationResult) => {
                 return helpers.checkEmailIsPresent(req.body.email)
@@ -38,8 +37,7 @@ const users = {
                     }).then((validatePassword) => {
                         logger.trace("Login successfully",req.body.email);
                         return responseFunction.sendSuccess("Login successfully",res,{userId:req.body.userId,token:validatePassword});
-                        // return responseFunction.sendError("Login failed",res)
-                }).catch((err) => {
+                    }).catch((err) => {
                         return responseFunction.sendError(err,res);
                 })
             
