@@ -19,10 +19,12 @@ class HomePage extends React.Component {
             padding: "50px"
         };
         const container = {
+            "color":"#FFFFFF",
+            "backgroundColor": "#FFFFFF",
             border:"2px #CACFD2 solid",
             "borderRadius":"4px",
             "marginTop":"50px",
-            "height":"100px"
+            "height":"100px",
         }
 
         const navbarColor = {
