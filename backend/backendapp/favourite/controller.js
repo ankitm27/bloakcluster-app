@@ -6,7 +6,7 @@ const appHelper = require('./../helpers.js');
 
 const favourite = {
     getFavouriteList:(req,res) => {
-        helpers.getFavouriteList()
+        helpers.getFavouriteList(db)
         .then((getFavouriteList) => {
                 logger.trace("Successfully get data",getFavouriteList);
                 return responseFunction.sendSuccess("Successfully get list",res,getFavouriteList);
@@ -30,7 +30,7 @@ const favourite = {
     getUsersFavourite:(req,res) => {
         fieldValidation.getUsersFavourite(req.query)
         .then((fieldValidation) => {
-                return helpers.getUserFavouriteList(req.query.userId)
+                return helpers.getUserFavouriteList(req.query.userId,db)
             }).then((getUserFavouriteList) => {
                 return helpers.getDescription(getUserFavouriteList)
             }).then((getDescription) => {

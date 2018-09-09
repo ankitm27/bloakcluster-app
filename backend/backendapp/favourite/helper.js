@@ -1,6 +1,6 @@
 "use strict";
 const favourite = {
-    getFavouriteList: () => {
+    getFavouriteList: (db) => {
         return new Promise((resolve, reject) => {
             const favouriteList = db.get('favouriteList');
             favouriteList.find({}, {_id: 0}, (err, result) => {
@@ -29,7 +29,7 @@ const favourite = {
             })
         })
     },
-    getUserFavouriteList: (userId) => {
+    getUserFavouriteList: (userId,db) => {
         return new Promise((resolve, reject) => {
             const favouriteList = db.get('userFavouriteList');
             favouriteList.find({userId:userId}, {_id: 0}, (err, result) => {
@@ -45,13 +45,12 @@ const favourite = {
     },
     getDescription:(userList) => {
         return new Promise((resolve,reject) => {
-        favourite.getFavouriteList()
+        favourite.getFavouriteList(db)
         .then((getFavouriteList) => {
             const repoList = userList[0].favouriteList;
             var desUserList = [];
             getFavouriteList.forEach((list) => {
                 if(repoList.indexOf(list.repoName) > -1){
-                   console.log("list",list); 
                    desUserList.push(list);
                 }
             })
