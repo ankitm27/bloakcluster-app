@@ -7,7 +7,7 @@ import { userActions } from '../_actions';
 
 class HomePage extends React.Component {
     componentDidMount() {
-        this.props.dispatch(userActions.getAll());
+        this.props.dispatch(userActions.getUsersGists());
     }
 
 
@@ -49,13 +49,14 @@ class HomePage extends React.Component {
                        <a className="navbar-brand" href="#">BlockCluster</a>
                      </div>
                   <ul className="nav navbar-nav">
-                     <li className="active"><a href="/addFavourite">Add</a></li>
+                     <li className="active"><a href="/addFavourite">Add Local</a></li>
+                     <li ><a href="/addGists">Add Gists</a></li>
                   </ul>
                   </div>
             </nav>
                 {items.map(function(name, index){
                       return <div key={ index } style={container}>
-                               <h3 style={heading}>{name.repoName}</h3>
+                               <h3 style={heading}>{name.repoId}</h3>
                                <p style={description}>{name.description}</p>
 
                     </div>

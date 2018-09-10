@@ -10,7 +10,10 @@ export const userService = {
     update,
     delete: _delete,
     getAllList,
-    addRepo
+    addRepo,
+    getGists,
+    addGists,
+    getUsersGists
 };
 
 function login(email, password) {
@@ -19,18 +22,9 @@ function login(email, password) {
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({ email, password })
     };
-    //console.log("email",email);
-    //console.log("password",password);
     return fetch(`${config.apiUrl}/users/login`, requestOptions)
         .then(handleResponse)
         .then(user => {
-            console.log("user 11111",user);
-            // login successful if there's a jwt token in the response
-            //if (user.success) {
-            //    // store user details and jwt token in local storage to keep user logged in between page refreshes
-            //    localStorage.setItem('user', JSON.stringify(user));
-            //}
-
             return user;
         });
 }
@@ -42,7 +36,15 @@ function addRepo(token, repoName) {
         body: JSON.stringify({ repoName })
     };
     return fetch(`${config.apiUrl}/favourite/add`, requestOptions).then(handleResponse)
-
+}
+function addGists(token, repoId,description) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' ,token:token},
+        body: JSON.stringify({ repoId ,description})
+    };
+    console.log("request options",requestOptions);
+    return fetch(`${config.apiUrl}/favourite/gists/add`, requestOptions).then(handleResponse)
 }
 
 function logout() {
@@ -50,7 +52,6 @@ function logout() {
 }
 
 function getAll(token) {
-    console.log("yes");
     const requestOptions = {
         method: 'GET',
         headers:{'token':token}
@@ -59,13 +60,27 @@ function getAll(token) {
 }
 
 
+function getUsersGists(token) {
+    const requestOptions = {
+        method: 'GET',
+        headers:{'token':token}
+    };
+    return fetch(`${config.apiUrl}/favourite/users/gists`, requestOptions).then(handleResponse);
+}
+
 function getAllList() {
-    console.log("yes");
     const requestOptions = {
         method: 'GET',
     };
-
     return fetch(`${config.apiUrl}/favourite/list`, requestOptions).then(handleResponse);
+}
+
+
+function getGists() {
+    const requestOptions = {
+        method: 'GET',
+    };
+    return fetch(`${config.apiUrl}/favourite/gists`, requestOptions).then(handleResponse);
 }
 
 function getById(id) {

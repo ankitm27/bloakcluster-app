@@ -59,7 +59,39 @@ const favourite = {
             return reject("there is some problem to fetech the result, Please try later");
         })
     })
-}
+},
+    addIntoGistsList: (userId, repoId,description) => {
+        return new Promise((resolve, reject) => {
+            const list = {"repoId":repoId,"description":description};
+            const favouriteList = db.get('userFavouriteList');
+            favouriteList.findOneAndUpdate({
+                userId: userId
+            }, {
+                $addToSet: {gistsList: list}
+            }, {upsert: true}, (err, result) => {
+                if (err) {
+                    console.log("err",err);
+                    return reject({code: "SE", msg: "Please try after some time"});
+                }
+                console.log("result",result);
+                return resolve(result);
+            })
+        })
+    },
+    getUserGists: (userId,db) => {
+        return new Promise((resolve, reject) => {
+            const favouriteList = db.get('userFavouriteList');
+            favouriteList.find({userId:userId}, {_id: 0,gistsList:1}, (err, result) => {
+                if (err) {
+                    return reject({code: "SE", msg: "Please try after some time"});
+                }
+                if (result.length == 0) {
+                    return reject({code: "DNP", msg: "Data is not present"});
+                }
+                return resolve(result);
+            })
+        })
+    },
 };
 
 module.exports = favourite;

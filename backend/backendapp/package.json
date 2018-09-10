@@ -20,6 +20,7 @@
     "monk": "^6.0.6",
     "morgan": "~1.9.0",
     "pug": "2.0.0-beta11",
+    "request-promise": "^4.2.2",
     "rewire": "^4.0.1",
     "sinon": "^6.2.0",
     "underscore": "^1.9.1",

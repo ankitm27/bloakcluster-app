@@ -11,7 +11,10 @@ export const userActions = {
     getAll,
     delete: _delete,
     getAllList,
-    addRepo
+    addRepo,
+    getGists,
+    addGists,
+    getUsersGists
 };
 
 function login(username, password) {
@@ -120,6 +123,36 @@ function getAll() {
     }
 }
 
+function getUsersGists() {
+    const token = getToken();
+    return dispatch => {
+        dispatch(request());
+
+        userService.getUsersGists(token)
+            .then(
+                users => {
+                dispatch(success(users.data))
+            },
+                error => {
+                //console.log("error",error);
+                dispatch(failure(error.toString()))
+            }
+        );
+    };
+
+    function request() {
+        return {type: userConstants.GETALL_REQUEST}
+    }
+
+    function success(users) {
+        return {type: userConstants.GETALL_SUCCESS, users}
+    }
+
+    function failure(error) {
+        return {type: userConstants.GETALL_FAILURE, error}
+    }
+}
+
 function getAllList() {
     return dispatch => {
         dispatch(request());
@@ -149,6 +182,36 @@ function getAllList() {
     }
 }
 
+
+function getGists() {
+    return dispatch => {
+        dispatch(request());
+        userService.getGists()
+            .then(
+                gists => {
+                    //console.log("gists",gists);
+                    //console.log("gists data",gists.data);
+                    dispatch(success(gists.data))
+
+                },
+                error => {
+                dispatch(failure(error.toString()))
+            }
+        );
+    };
+
+    function request() {
+        return {type: userConstants.GETGISTS_REQUEST}
+    }
+
+    function success(gists) {
+        return {type: userConstants.GETGISTS_SUCCESS, gists}
+    }
+
+    function failure(error) {
+        return {type: userConstants.GETALL_FAILURE, error}
+    }
+}
 function _delete(id) {
     return dispatch => {
         dispatch(request(id));
@@ -203,6 +266,39 @@ function addRepo(repoName) {
         return {type: userConstants.ADDITEM_FAILURE, error}
     }
 }
+
+
+function addGists(repoId,description) {
+    const token = getToken();
+    return dispatch => {
+        dispatch(request({repoId}));
+
+        userService.addGists(token, repoId,description)
+            .then(
+                result => {
+                dispatch(success(result));
+                history.push('/');
+            },
+                error => {
+                dispatch(failure(error.toString()));
+                dispatch(alertActions.error(error.toString()));
+            }
+        );
+    };
+
+    function request(user) {
+        return {type: userConstants.ADDITEM_REQUEST, user}
+    }
+
+    function success(user) {
+        return {type: userConstants.ADDITEM_SUCCESS, user}
+    }
+
+    function failure(error) {
+        return {type: userConstants.ADDITEM_FAILURE, error}
+    }
+}
+
 
 const getToken = () => {
     let token = localStorage.getItem("user");
