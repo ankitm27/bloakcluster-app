@@ -39,7 +39,7 @@ const github = {
             .then((result) => {
                 logger.trace("Successfully gists on github");
             }).catch((err) => {
-                logger.trace("Github may be start already");
+                logger.trace("Github may be star already");
             })
     }
 };
