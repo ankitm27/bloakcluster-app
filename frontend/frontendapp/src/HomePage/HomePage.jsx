@@ -55,8 +55,8 @@ class HomePage extends React.Component {
             </nav>
                 {items.map(function(name, index){
                       return <div key={ index } style={container}>
-                               <h3 style={heading}>{name.description}</h3>
-                               <p style={description}>{name.repoId}</p>
+                               <h3 style={heading}>Description-{name.description}</h3>
+                               <p style={description}>Repo Id-{name.repoId}</p>
 
                     </div>
 

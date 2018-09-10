@@ -36,15 +36,12 @@ const favourite = {
             const schema = Joi.object().keys({
                 userId:Joi.string().required(),
                 repoId:Joi.string().required(),
-                description:Joi.string().required()
             });
             const validateRequest = Joi.validate({
                 userId: data.userId,
                 repoId:data.repoId,
-                description:data.description
             }, schema);
             if (validateRequest.error) {
-                console.log("validation request",validateRequest.error);
                 return reject({status: "error", code:"FVF" , msg: "field validation failed"});
             }
             return resolve("success")
