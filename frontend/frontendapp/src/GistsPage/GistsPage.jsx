@@ -20,9 +20,7 @@ class GistsPage extends React.Component {
     }
 
     render(){
-        console.log("this.props",this.props);
         let items = this.props.gists.gists || [];
-        console.log("items",items);
         const navbarColor = {
             "color":"#FFFFFF",
             "backgroundColor": "#FFFFFF",
@@ -38,7 +36,9 @@ class GistsPage extends React.Component {
             border:"2px #CACFD2 solid",
             "borderRadius":"4px",
             "marginTop":"50px",
-            "height":"170px"
+            //"height":"200px",
+            "clear":"both",
+            "paddingBottom":"5px"
         };
         const heading = {
             "color":"#17202A",
@@ -66,9 +66,9 @@ class GistsPage extends React.Component {
         {items.map((name,index) => {
             return (
                 <div key={index } style={container}>
-                <h3 style={heading}>{name.id}</h3>
-        <p style={description}>{name.description}</p>
-        <p style={description}>{name.url}</p>
+                <h3 style={heading}>Description-{name.description}</h3>
+        <p style={description}>Id-{name.id}</p>
+        <p style={description}>URL-{name.url}</p>
         <button type="button" className="btn btn-success btn-lg" style={buttonStyle} onClick={this.handleSubmit.bind(this,{name})}>Add</button>
 </div>
 )

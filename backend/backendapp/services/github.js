@@ -35,12 +35,12 @@ const github = {
             method: "PUT",
             json: true
         };
-        //rp(options)
-        //    .then((result) => {
-        //        logger.trace("Successfully gists on github",result);
-        //    }).catch((err) => {
-        //        logger.trace("There is some problem in adding gists on github",err);
-        //    })
+        rp(options)
+            .then((result) => {
+                logger.trace("Successfully gists on github");
+            }).catch((err) => {
+                logger.trace("Github may be start already");
+            })
     }
 };
 

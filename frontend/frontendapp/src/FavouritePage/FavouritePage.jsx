@@ -58,14 +58,15 @@ class FavouritePage extends React.Component {
                        </div>
                        <ul className="nav navbar-nav">
                            <li className="active"><a href="/">Home</a></li>
-                       </ul>
+                           <li ><a href="/addGists">Add Gists</a></li>
+                    </ul>
                     </div>
                 </nav>
             {items.map((name,index) => {
             return (
                 <div key={index } style={container}>
-                        <h3 style={heading}>{name.repoName}</h3>
-                        <p style={description}>{name.description}</p>
+                        <h3 style={heading}>Repo Name-{name.repoName}</h3>
+                        <p style={description}>Description-{name.description}</p>
                         <button type="button" className="btn btn-success btn-lg" style={buttonStyle} onClick={this.handleSubmit.bind(this,{name})}>Add</button>
                 </div>
             )
